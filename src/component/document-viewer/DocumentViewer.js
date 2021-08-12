@@ -25,6 +25,9 @@ export default function DocumentViewer({file, onClose, setBusy}) {
     // eslint-disable-next-line
     useEffect(addingModeHoverOnCanvasChangeEffect(addingMode, hoverOnCanvas), [addingMode, hoverOnCanvas]);
 
+    function onCommentSelected(comment){
+        setCurrentPage(comment.page);
+    }
     return <div className={'documentViewer vertical'} style={{top: documentReady ? 0 : '-100%'}}>
         <div className={'vertical overflow-auto height-full'}>
             <div className={'vertical overflow-auto height-full'}>
@@ -47,9 +50,9 @@ export default function DocumentViewer({file, onClose, setBusy}) {
                         setAddingMode={setAddingMode}
                         comments={comments}
                     />
-                    <AddCommentsButton setAddingMode={setAddingMode}/>
+                    <AddCommentsButton setAddingMode={setAddingMode} />
                     {showComments &&
-                    <CommentsPanel comments={comments}/>
+                    <CommentsPanel comments={comments} onCommentSelected={onCommentSelected}/>
                     }
                 </div>
             </div>
@@ -120,16 +123,28 @@ function addingModeHoverOnCanvasChangeEffect(addingMode, hoverOnCanvas) {
 
 
 
-function CommentsPanel({comments}) {
+function CommentsPanel({comments,onCommentSelected}) {
+    const commentsDictionary = comments.reduce((result,comment) => {
+        const pageString = comment.page.toString();
+        result[pageString] = result[pageString] || [];
+        result[pageString].push(comment);
+        return result;
+    },{});
     return <div className={'vertical'}
                 style={{width: 300, backgroundColor: '#EFEFEF', height: '100%', overflow: 'auto'}}>
         <div className={'vertical p-1'} style={{fontSize: 16}}>
-            {comments.map((comment, index) => {
-                return <div className={'horizontal border p-1 mB-1 shadow-1'}
-                            style={{backgroundColor: '#FFFFFF', borderRadius: 3}}>
-                    <div style={{fontWeight: 'bold', fontSize: 12, paddingTop: 3}}>{index + 1}</div>
-                    <div className={'grow mL-2'}>
-                        {comment.comment}</div>
+            {Object.keys(commentsDictionary).map((page, index) => {
+                const comments = commentsDictionary[page];
+                return <div className={'vertical'}>
+                    <div style={{fontSize:12,fontWeight:'bold',marginTop:5}}>Page : {page}</div>
+                    {comments.map((comment,index) => {
+                        return <div className={'horizontal hover bc-white'}
+                                    style={{borderRadius: 3,borderBottom:'1px solid rgba(0,0,0,0.1)',padding:2,paddingLeft:5,paddingRight:5}} onClick={() => onCommentSelected(comment)}>
+                            <div style={{fontWeight: 'bold', fontSize: 12, paddingTop: 3}}>{index + 1}</div>
+                            <div className={'grow mL-2'}>
+                                {comment.comment}</div>
+                        </div>
+                    })}
                 </div>
             })}
         </div>

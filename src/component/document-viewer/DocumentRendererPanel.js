@@ -32,7 +32,7 @@ export default function DocumentRendererPanel({
             }} onMouseOver={() => setHoverOnCanvas(true)}
                  onMouseLeave={() => setHoverOnCanvas(false)}
                  onClick={onClickCanvas(addingMode, setComments, currentPage, file, setAddingMode)}>
-                {comments.map((comment, index) => {
+                {comments.filter(comment => comment.page === currentPage).map((comment, index) => {
                     return <CommentComponent key={comment.id} index={index + 1} comment={comment}
                                              canvasRef={canvasRef} setComments={setComments}/>
                 })}
@@ -51,7 +51,7 @@ function onClickCanvas(addingMode, setComments, currentPage, file, setAddingMode
                 return [...comments, {
                     y: offsetY / height,
                     x: offsetX / width,
-                    currentPage,
+                    page:currentPage,
                     file,
                     comment: '',
                     id: generateUid()

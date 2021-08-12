@@ -52,6 +52,7 @@ export default function CommentComponent({index, comment, setComments, canvasRef
                           readOnly={!editMode}
                           onMouseOver={() => setIsHovered(true)}
                           onMouseLeave={() => setIsHovered(false)}
+                          defaultValue={comment.comment}
                 />
                 <div className={'horizontal'}
                      style={{position: 'absolute', opacity: isHovered ? 1 : editMode ? 1 : 0, right: -15, top: -20}}

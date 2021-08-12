@@ -5,10 +5,10 @@ import {useRef,useState} from "react";
 export default function PageSelector({onChange,setBusy}) {
     const [files,setFiles] = useState([]);
     const inputFileRef = useRef();
-    return <div className={'vertical'}>
+    return <div className={'vertical'} style={{backgroundColor:'radial-gradient(circle, rgba(255,255,255,1) 1%, rgba(239,239,239,1) 100%)'}}>
         {/*This is the header information */}
         <div className={'horizontal p-1 '}>
-            <input type="text" placeholder={'Search Document'} className={'grow shadow-1'}/>
+
             <button className={'mL-2 hover shadow-1'} onClick={() => {
                 inputFileRef.current.click();
             }}>
