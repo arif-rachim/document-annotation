@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Document Annotation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is an example of PDF annotation in React.
 
 ## Available Scripts
 
